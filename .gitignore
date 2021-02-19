@@ -1,6 +1,3 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 
-CoinAlert/CoinAlert/settings.py
-CoinAlert/CoinAlert/__pycache__/
-CoinAlert/CoinAlert/db.sqlite3/
