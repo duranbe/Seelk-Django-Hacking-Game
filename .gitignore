@@ -3,3 +3,4 @@ __pycache__/
 
 CoinAlert/settings.py
 CoinAlert/__pycache__/
+CoinAlert/db.sqlite3/
