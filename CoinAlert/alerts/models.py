@@ -12,4 +12,4 @@ class Alert(models.Model):
     coin_value	= models.DecimalField(max_digits=25,decimal_places=15)
     is_activated = models.BooleanField()
     date_created = models.DateTimeField(auto_now=True)
-    linked_user = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE)
+    linked_user = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE,editable=False)
