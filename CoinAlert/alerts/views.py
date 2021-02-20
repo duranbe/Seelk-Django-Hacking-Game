@@ -10,7 +10,6 @@ class AlertViewSet(viewsets.ModelViewSet):
 	permissions_classes = [IsAuthenticated]
 	serializer_class = AlertSerializer
 
-
 	def perform_create(self, serializer):
 		serializer.save(linked_user=self.request.user)
 
