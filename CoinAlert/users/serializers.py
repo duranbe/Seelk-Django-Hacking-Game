@@ -3,7 +3,7 @@
 from django.contrib.auth import get_user_model,password_validation
 from rest_framework.authtoken.models import Token
 from rest_framework import serializers
-from .models import CustomUserManager
+from .models import CustomUserManager,CustomUser
 
 User = get_user_model()
 
@@ -50,6 +50,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return value
 
 class PasswordChangeSerializer(serializers.Serializer):
+
     current_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
 
@@ -61,3 +62,10 @@ class PasswordChangeSerializer(serializers.Serializer):
     def validate_new_password(self, value):
         password_validation.validate_password(value)
         return value
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id','email')
+        

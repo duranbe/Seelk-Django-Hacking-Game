@@ -4,57 +4,92 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 
 from . import serializers
 from .users_utils import get_and_authenticate_user,create_user_account
 
 User = get_user_model()
 
-class AuthViewSet(viewsets.GenericViewSet):
-    permission_classes = [AllowAny, ] #Allow Any -> Permet a n'importe qui de se log
-    serializer_class = serializers.EmptySerializer #Serializer par défaut
-    serializer_classes = {
-        'login': serializers.UserLoginSerializer, #Liste des serializer
-        'register': serializers.UserRegisterSerializer,
-        'password_change': serializers.PasswordChangeSerializer
-    }
-
-    @action(methods=['POST', ], detail=False)
-    def login(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = get_and_authenticate_user(**serializer.validated_data)
-        data = serializers.AuthUserSerializer(user).data
-        return Response(data=data, status=status.HTTP_200_OK)
-
-
-    @action(methods=['POST', ], detail=False)
-    def register(self, request):
+class UserViewSet(viewsets.GenericViewSet):
+   
+    def create(self, request):
+        print(request.data)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = create_user_account(**serializer.validated_data)
         data = serializers.AuthUserSerializer(user).data
         return Response(data=data, status=status.HTTP_201_CREATED)
 
-    @action(methods=['POST', ], detail=False)
-    def logout(self, request):
-        logout(request)
-        data = {'success': 'Sucessfully logged out'}
-        return Response(data=data, status=status.HTTP_200_OK)
+    def retrieve(self, request, pk=None):
+        instance = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
-    @action(methods=['POST'], detail=False, permission_classes=[IsAuthenticated, ])
-    def password_change(self, request):
+    def list(self, request):
+        serializer = self.get_serializer(self.get_queryset(), many=True)
+        return Response(serializer.data)
+
+    def update(self, request, pk=None):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         request.user.set_password(serializer.validated_data['new_password'])
         request.user.save()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+        
+    def destroy(self, request, pk=None):
+        instance = get_object_or_404(self.get_queryset(), pk=pk)
+        instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT) 
+        
+
     def get_serializer_class(self):
-        if not isinstance(self.serializer_classes, dict): #Si la liste des serializer n'est pas un dict
-            raise ImproperlyConfigured("serializer_classes should be a dict mapping.")
 
-        if self.action in self.serializer_classes.keys(): #
-            return self.serializer_classes[self.action]
+        if self.action == 'create':
+            return serializers.UserRegisterSerializer
 
-        return super().get_serializer_class()
+        if self.action == 'retrieve' or self.action == 'list':
+            return serializers.UserSerializer
+
+        if self.action == 'update':
+            return(serializers.PasswordChangeSerializer)
+
+        return(serializers.EmptySerializer)
+
+    def get_queryset(self):
+
+        if self.request.user.is_staff or self.request.user.is_superuser:
+            return(User.objects.all())
+
+        elif self.request.user.is_authenticated:
+            return(User.objects.filter(id=self.request.user.id))
+        else:
+            return(User.objects.none())
+
+
+class AuthViewSet(viewsets.GenericViewSet):
+    permission_classes = [AllowAny,] #Allow Any -> Permet a n'importe qui de se log
+    
+    @action(methods=['POST', ], detail=False)
+    def login(self, request):
+        print(request.data)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = get_and_authenticate_user(**serializer.validated_data)
+        data = serializers.AuthUserSerializer(user).data
+        return Response(data=data, status=status.HTTP_200_OK)
+
+    @action(methods=['POST', ], detail=False)
+    def logout(self, request):
+        self.request.user.auth_token.delete()
+        logout(request)
+        data = {'success': 'Sucessfully logged out'}
+        return Response(data=data, status=status.HTTP_200_OK)
+
+    def get_serializer_class(self):
+        
+        if self.action == 'login':
+            return serializers.UserLoginSerializer
+
+        return(serializers.EmptySerializer)

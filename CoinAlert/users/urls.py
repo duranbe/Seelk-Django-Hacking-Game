@@ -7,8 +7,9 @@ from rest_framework.response import Response
 
 app_name = 'users'
 
-from .views import AuthViewSet
+from .views import AuthViewSet,UserViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register('api/auth', AuthViewSet, basename='auth')
+router.register('api/user',UserViewSet,basename='user')
 urlpatterns = router.urls
