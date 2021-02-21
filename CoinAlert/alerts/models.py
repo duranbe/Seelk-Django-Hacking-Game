@@ -13,3 +13,7 @@ class Alert(models.Model):
     is_activated = models.BooleanField()
     date_created = models.DateTimeField(auto_now=True)
     linked_user = models.ForeignKey('users.CustomUser',on_delete=models.CASCADE,editable=False)
+
+    class Meta:
+        ordering = ['date_created']
+        
