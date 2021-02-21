@@ -1,8 +1,13 @@
 from rest_framework import serializers
-from .models import Alert
+from .models import TimeAlert,ValueAlert
 
 
-class AlertSerializer(serializers.ModelSerializer):
+class TimeAlertSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = Alert
+		model = TimeAlert
+		fields = '__all__'
+
+class ValueAlertSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = ValueAlert
 		fields = '__all__'
