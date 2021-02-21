@@ -25,6 +25,7 @@ class TimeAlert(Alert):
     percentage =  models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
 
 class ValueAlert(Alert):
+    
     coin_value = models.DecimalField(max_digits=25,decimal_places=15)
 
         
