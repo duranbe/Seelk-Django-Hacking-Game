@@ -54,6 +54,9 @@ In settings.py modify SECRET KEY, COINAPI_KEY and all EMAIL variables.
 Put a secret key
 Then 
 `py manage.py makemigrations`
+
 `py manage.py migrate`
+
 `py manage.py runserver`
+
 will do the trick
