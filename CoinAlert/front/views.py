@@ -6,3 +6,6 @@ def home(request):
 def login(request):
 	return render(request=request,
 		template_name='login.html')
+def register(request):
+	return render(request=request,
+		template_name='register.html')

@@ -9,10 +9,11 @@
 	<title>CoinAlert 🔔</title>
 </head>
 <body>
-	<div style="float:right; clear:right; margin-right: 2rem;" id='log'><button class='btn bg-blue' onClick='UserLogOut()'><h3>logout</h3></button></div>
+	<div style="float:right; clear:right; margin-right: 2rem;" id='register'></div>
+	<div style="float:right; clear:right; margin-right: 2rem;" id='log'></div>
 	<center>
 		<div id ='logo'>
-			<h1>CoinAlert🔔</h1>
+			<a href="/"><h1>CoinAlert🔔</h1></a>
 		</div>
 	</center>
 	{% block content %}
@@ -20,10 +21,6 @@
 </body>
 </html>
 <script type="text/javascript">	
-	var elem = document.getElementById('log')
-	if (auth_token == null){
-		elem.innerHTML = `<button class='btn bg-blue'><a href="/login"><h3>login</h3><a></button>`
-	}
 	function UserLogOut(){
 		const xhr = new XMLHttpRequest();
 		const csrftoken = getCookie('csrftoken');

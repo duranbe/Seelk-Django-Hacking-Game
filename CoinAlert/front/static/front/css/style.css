@@ -7,7 +7,9 @@ body {
 #logo {
 	margin-bottom: 3rem;
 }
-
+a { 
+	color: #0a91f9; 
+} 
 h1 {
 	color: white;
 	font-size: 3rem;
@@ -24,7 +26,7 @@ input,select {
 	margin: 1rem;
 }
 
-#card-container, #login-card-container,#form-card-container{
+#card-container,#login-card-container,#form-card-container,#register-card-container{
 	display: flex;
 	align-items: center;
 	justify-content: center;

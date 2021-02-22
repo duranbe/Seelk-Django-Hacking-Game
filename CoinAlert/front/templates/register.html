@@ -2,15 +2,15 @@
 <html>
 <body>
 	{% extends 'base.html' %}
-	
-	{% load static %}
+	{% csrf_token %}
 	{% block content %}
 
-	<div id='login-card-container'>
-		
+	<div id='register-card-container'>
+			
 			<div class='card'>
-				<div class='card-title'><h2>Login</h2></div>
-				<form id="LoginForm">
+				<div class='card-title'><h2>Register</h2></div>
+				
+				<form id="RegisterForm">
 					{% csrf_token %}
 				<div>
 					<label for="email">Email</label>
@@ -18,51 +18,42 @@
 				<div>
 					<input type="email" id="email" size="50" name="email" required>
 				</div>
+
 				<div>
 					<label for="pass">Password</label>
 				</div>
+
 				<div>
 	    			<input type="password" id="pass" name="password" minlength="8" required>
 	    		</div>
-	    		<button id='submit' onClick='sendLogin()'>Submit</button>
+	    		<p> It must contain at least 8 characters.</p>
+	    		<button id='submit' onClick='sendRegister()'>Submit</button>
 				</form>
 			</div>
-		
 	</div>
+</body>
+</html>
 <script type="text/javascript">
+	const csrftoken = getCookie('csrftoken');
 	const auth_token = getCookie('auth_token');
 	if(auth_token != null && auth_token !== 'undefined' ){window.location.href = '../'}
 
+	var logElem = document.getElementById('log')
+	logElem.innerHTML = `<button class='btn bg-blue'><a href="/login"><h3>login</h3><a></button>`
 
-	var regElem = document.getElementById('register')
-	regElem.innerHTML = `<button class='btn bg-blue'><a href="/register"><h3>register</h3><a></button>`
-
-	function sendLogin(){
-
-		var LoginForm = document.getElementById('LoginForm');
-		formData = new FormData(LoginForm);
+	function sendRegister(){
+		var RegisterForm = document.getElementById('RegisterForm');
+		formData = new FormData(RegisterForm);
 		const csrftoken = getCookie('csrftoken');
 		const xhr = new XMLHttpRequest();
-
 		xhr.responseType = "json";
-		xhr.open('POST','HTTP://'+window.location.host +'/api/auth/login');
+		xhr.open('POST','HTTP://'+window.location.host +'/api/user');
 		xhr.setRequestHeader('X-CSRF-Token', csrftoken)
 		xhr.onload = function(){ 
-			var response = xhr.response ;
+			var response = xhr.response;
 			console.log(response)
-			document.cookie = `auth_token=${response['auth_token']}`
-			window.location.href = '../'
 	 	}
 	 	xhr.send(formData);
 	}
-
-	var form = document.getElementById("LoginForm");
-	function handleForm(event) { event.preventDefault(); } 
-	form.addEventListener('submit', handleForm);
 </script>
-	{% endblock %}
-
-
-</body>
-</html>
-
+{% endblock %}
