@@ -52,7 +52,9 @@ In settings.py modify SECRET KEY, COINAPI_KEY and all EMAIL variables.
 ### Run Demo
 
 Put a secret key
-Then 
+
+Then
+
 `py manage.py makemigrations`
 
 `py manage.py migrate`
