@@ -11,7 +11,7 @@ class TimeAlertViewSet(viewsets.ModelViewSet):
 	serializer_class = TimeAlertSerializer
 
 	def perform_create(self, serializer):
-		serializer.save(linked_user=self.request.user)
+		serializer.save(linked_user=self.request.user,is_activated=True)
 
 	def get_queryset(self):
 		return TimeAlert.objects.filter(linked_user=self.request.user.id)
@@ -21,7 +21,7 @@ class ValueAlertViewSet(viewsets.ModelViewSet):
 	serializer_class = ValueAlertSerializer
 
 	def perform_create(self, serializer):
-		serializer.save(linked_user=self.request.user)
+		serializer.save(linked_user=self.request.user,is_activated=True)
 
 	def get_queryset(self):
 		return ValueAlert.objects.filter(linked_user=self.request.user.id)
