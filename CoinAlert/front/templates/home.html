@@ -1,118 +1,50 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<title>CoinAlert 🔔</title>
-</head>
 <body>
+	{% extends 'base.html' %}
 	{% csrf_token %}
-	<center>
-		<div id ='logo'>
-			<h1>CoinAlert🔔</h1>
-		</div>
-	</center>
-
-	<div id='card-container'>
-		
-	</div>
-		
-	
+	{% block content %}
+	<div id='card-container'></div>
 </body>
 </html>
 
-<style type="text/css">
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
-
-body {
-	background-color: #0a91f9;
-	font-family: Lato, Sans-serif;
-	
-}
-
-#logo {
-	margin-bottom: 3rem;
-}
-
-h1 {
-	color: white;
-	font-size: 3rem;
-}
-
-p {
-	color: 	#736f6f;
-}
-
-
-#card-container{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
-	  
-}
-
-.card {
-	background-color: white;
-	border-radius: 15px;
-	padding: 1rem;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  	text-align: center;
-  	margin: 1.5rem;
-  	
-}
-.regular-checkbox {
-	border-radius: 15px;
-}
-.card-title{
-	display: flex;
-	justify-content: space-between;
-}
-
-.btn{
-	background-color: white;
-	border: none;
-	padding: 0rem;
-	padding: 0rem;
-	display: inline-block;
-}
-
-
-</style>
-
 <script type="text/javascript">
-	function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-const csrftoken = getCookie('csrftoken');
+	const csrftoken = getCookie('csrftoken');
+	const auth_token = getCookie('auth_token');
 	
 	const xhr = new XMLHttpRequest();
 	xhr.responseType = "json";
-	xhr.open('GET','HTTP://'+window.location.host +'/api/alerts');
+	xhr.open('GET','HTTP://'+window.location.host +'/api/alerts/value');
 	xhr.setRequestHeader('X-CSRF-Token', csrftoken)
-	
+	xhr.setRequestHeader('Authorization','Token '+auth_token)
 	xhr.onload = function(){ 
 		var response = xhr.response ;
 		const elem = document.getElementById('card-container');	
 		response.forEach(result => {
 			console.log(result)
-			elem.append(createAlertCard(result))
+			elem.append(createValueAlertCard(result))
 		});
  	}
  	xhr.send();
 
- 	function createAlertCard(data){
+	const xhr2 = new XMLHttpRequest();
+	xhr2.responseType = "json";
+	xhr2.open('GET','HTTP://'+window.location.host +'/api/alerts/time');
+	xhr2.setRequestHeader('X-CSRF-Token', csrftoken)
+	xhr2.setRequestHeader('Authorization','Token '+auth_token)
+	xhr2.onload = function(){ 
+		var response = xhr2.response ;
+		const elem = document.getElementById('card-container');	
+		response.forEach(result => {
+			console.log(result)
+			elem.append(createTimeAlertCard(result))
+		});
+ 	}
+ 	xhr2.send();
+
+
+
+ 	function createValueAlertCard(data){
  		var newCard = document.createElement("div");
 		newCard.className = 'card';
 		if(data['when_alert']=='ABV'){
@@ -129,7 +61,7 @@ const csrftoken = getCookie('csrftoken');
 
 		newCard.innerHTML = `
 		<div class="card-title">
-		<h2> ${data['title']}</h2>  <h5><button class='btn' id=${data['id']} onClick="deleteAlert(this.id)"><i class="material-icons">delete</i></button></h5>
+		<h2> ${data['title']}</h2>  <h5><button class='btn bg-white' id=v${data['id']} onClick="deleteAlert(this.id,'value')"><i class="material-icons">delete</i></button></h5>
 		</div>
 		<p>${data['base_asset']} is ${word} ${Number(data['coin_value']).toLocaleString()} ${data['quote_asset']}<p>
 		<div>
@@ -139,16 +71,45 @@ const csrftoken = getCookie('csrftoken');
  		return(newCard)
  	}
 
- 	function deleteAlert(AlertId){
+ 	function createTimeAlertCard(data){
+ 		var newCard = document.createElement("div");
+		newCard.className = 'card';
+		if(data['when_alert']=='ABV'){
+			var word = 'above'
+		}else{
+			var word = 'below'
+		}
+
+		if(data['is_activated']){
+			var is_checked = 'checked'
+		}else{
+			var is_checked = ''
+		}
+
+		newCard.innerHTML = `
+		<div class="card-title">
+		<h2> ${data['title']}</h2>  <h5><button class='btn bg-white' id=${data['id']} onClick="deleteAlert(this.id,'time')"><i class="material-icons">delete</i></button></h5>
+		</div>
+		<p>${data['base_asset']} is ${word} ${Number(data['percentage']).toLocaleString()} % ${data['quote_asset']} during the last ${data['time_delta']}<p>
+		<div>
+		  <input type="checkbox" class="regular-checkbox" id="scales" name="scales" ${is_checked}>
+		  <label>Enabled</label>
+		</div>`
+ 		return(newCard)
+ 	}
+
+ 	function deleteAlert(AlertId,AlertType){
  		const xhr = new XMLHttpRequest();
 		xhr.responseType = "json";
-		xhr.open('DELETE','HTTP://'+window.location.host +'/api/alerts/'+AlertId);
+		xhr.open('DELETE','HTTP://'+window.location.host +'/api/alerts/'+AlertType+'/'+AlertId);
 		xhr.setRequestHeader('X-CSRF-Token', csrftoken)
-
+		xhr.setRequestHeader('Authorization','Token '+auth_token)
 		xhr.onload = function(){ 
 			var response = xhr.response ;
 			console.log(response)
 	 	}
 	 	xhr.send();
  	}
+
 </script>
+{% endblock %}

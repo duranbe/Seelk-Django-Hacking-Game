@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script src="{% static 'front/js/getCookie.js' %}"></script>
+	<link href="{% static 'front/css/style.css' %}" rel="stylesheet">
+	<title>CoinAlert 🔔</title>
+</head>
+<body>
+	<div style="float:right; clear:right; margin-right: 2rem;" id='log'><button class='btn bg-blue' onClick='UserLogOut()'><h3>logout</h3></button></div>
+	<center>
+		<div id ='logo'>
+			<h1>CoinAlert🔔</h1>
+		</div>
+	</center>
+
+	{% block content %}
+	{% endblock %}
+</body>
+</html>
+<script type="text/javascript">	
+
+	var elem = document.getElementById('log')
+	
+	if (auth_token == null){
+		elem.innerHTML = `<button class='btn bg-blue'><a href="/login"><h3>login</h3><a></button>`
+	}
+
+	function UserLogOut(){
+		const xhr = new XMLHttpRequest();
+		const csrftoken = getCookie('csrftoken');
+		const auth_token = getCookie('auth_token');
+		xhr.responseType = "json";
+		xhr.open('POST','HTTP://'+window.location.host +'/api/auth/logout');
+		xhr.setRequestHeader('X-CSRF-Token', csrftoken)
+		xhr.setRequestHeader('Authorization','Token '+auth_token)
+		xhr.onload = function(){ 
+			var response = xhr.response ;
+			document.cookie = "auth_token=null ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+			document.location.reload();
+	 	}
+	 	xhr.send();
+	}
+</script>

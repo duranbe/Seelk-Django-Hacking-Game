@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap');
+body {
+	background-color: #0a91f9;
+	font-family: Lato, Sans-serif;
+}
+
+#logo {
+	margin-bottom: 3rem;
+}
+
+h1 {
+	color: white;
+	font-size: 3rem;
+}
+h3 {
+	color: white;
+}
+
+p {
+	color: 	#736f6f;
+}
+
+input {
+	margin: 1rem;
+}
+
+#card-container, #login-card-container{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;  
+}
+
+.card {
+	background-color: white;
+	border-radius: 15px;
+	padding: 1rem;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  	text-align: center;
+  	margin: 1.5rem;  	
+}
+.regular-checkbox {
+	border-radius: 15px;
+}
+.card-title{
+	display: flex;
+	justify-content: space-between;
+}
+
+.btn{
+	border: none;
+	padding: 0rem;
+	padding: 0rem;
+	display: inline-block;
+}
+.bg-white{
+	background-color: white;
+}
+.bg-blue{
+	background-color: #0a91f9;
+}
