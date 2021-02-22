@@ -70,7 +70,7 @@ def time_alert():
 
 			if (criteria == 'BLW'):
 
-				decrease = 1 - (alert_percent/100)
+				decrease = 1 - (alert_percent/100) 
 
 				if (before_value*decrease)==(now_value):
 

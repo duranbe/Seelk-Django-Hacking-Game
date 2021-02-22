@@ -20,12 +20,12 @@ class Alert(models.Model):
 
 
 class TimeAlert(Alert):
-
+    # Percentage change: Be able to create an alert when the cryptocurrency increases by X% in a given timeframe
     time_delta = models.DurationField()
     percentage =  models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
 
 class ValueAlert(Alert):
-    
+    # Value change: alert when coin value change
     coin_value = models.DecimalField(max_digits=25,decimal_places=15)
 
         

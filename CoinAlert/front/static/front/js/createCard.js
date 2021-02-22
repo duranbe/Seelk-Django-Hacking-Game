@@ -150,21 +150,21 @@ function CreateTimeAlertCardForm(){
 		elem.append(newCard)
 }
 function createAlert(AlertType){
-		console.log(AlertType)
-		if(AlertType == 'value'){
-			var Form = document.getElementById('ValueAlertForm');
-		}else{
-			var Form = document.getElementById('TimeAlertForm');
-		}
+		
+	if(AlertType == 'value'){
+		var Form = document.getElementById('ValueAlertForm');
+	}else{
+		var Form = document.getElementById('TimeAlertForm');
+	}
 			
-		var formData = new FormData(Form);
-		const xhr = new XMLHttpRequest();
-		xhr.responseType = "json";
-		xhr.open('POST','HTTP://'+window.location.host +'/api/alerts/'+AlertType);
-		xhr.setRequestHeader('X-CSRF-Token', csrftoken)
-		xhr.setRequestHeader('Authorization','Token '+auth_token)
-		xhr.onload = function(){ 
-			var response = xhr.response;
-		}
-		xhr.send(formData);
+	var formData = new FormData(Form);
+	const xhr = new XMLHttpRequest();
+	xhr.responseType = "json";
+	xhr.open('POST','HTTP://'+window.location.host +'/api/alerts/'+AlertType);
+	xhr.setRequestHeader('X-CSRF-Token', csrftoken)
+	xhr.setRequestHeader('Authorization','Token '+auth_token)
+	xhr.onload = function(){ 
+		var response = xhr.response;
+	}
+	xhr.send(formData);
 }

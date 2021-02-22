@@ -11,9 +11,10 @@
 <script type="text/javascript">
 	const csrftoken = getCookie('csrftoken');
 	const auth_token = getCookie('auth_token');
-	console.log(auth_token)
+	
 	var logElem = document.getElementById('log')
 	var regElem = document.getElementById('register')
+
 	if (auth_token === "undefined" || auth_token == null){
 		logElem.innerHTML = `<button class='btn bg-blue'><a href="/login"><h3>login</h3><a></button>`
 		regElem.innerHTML = `<button class='btn bg-blue'><a href="/register"><h3>register</h3><a></button>`

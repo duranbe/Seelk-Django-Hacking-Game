@@ -33,7 +33,6 @@
 	const auth_token = getCookie('auth_token');
 	if(auth_token != null && auth_token !== 'undefined' ){window.location.href = '../'}
 
-
 	var regElem = document.getElementById('register')
 	regElem.innerHTML = `<button class='btn bg-blue'><a href="/register"><h3>register</h3><a></button>`
 
@@ -61,8 +60,6 @@
 	form.addEventListener('submit', handleForm);
 </script>
 	{% endblock %}
-
-
 </body>
 </html>
 
