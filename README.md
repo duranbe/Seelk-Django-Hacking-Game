@@ -1,20 +1,21 @@
 # Seelk-Django-Hacking-Game
 Seelk Django Hacking Game
 
-CoinAlert : a simple cryptocurrency notification app
+CoinAlert 🔔 : a simple cryptocurrency notification app
 
 Featuring :
 
-- Alert based on coin value
-- Alert based on a X % increase or decrease during a given timeframe
-- Email Alert
-- Use of CoinApi.io
+- ✅ Multi-Currency support
+- ✅ Alert based on coin value
+- ✅ Alert based on a X % increase or decrease during a given timeframe
+- ✅ Email Alert
+- ✅ Use of CoinApi.io
 
 ### Technology
 
 Django, Django Rest Framework, Celery, Redis, SQLITE3 and HTML/CSS/JS
 
-### Django Apps
+### Django Apps 🐍
 
 - users : Manage Users with CRUD and Login/Logout
 
