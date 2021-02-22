@@ -5,9 +5,9 @@
 	{% csrf_token %}
 	{% block content %}
 	<div id='card-container'></div>
+	<div id='form-card-container'></div>
 </body>
 </html>
-
 <script type="text/javascript">
 	const csrftoken = getCookie('csrftoken');
 	const auth_token = getCookie('auth_token');
@@ -21,7 +21,6 @@
 		var response = xhr.response ;
 		const elem = document.getElementById('card-container');	
 		response.forEach(result => {
-			console.log(result)
 			elem.append(createValueAlertCard(result))
 		});
  	}
@@ -36,66 +35,14 @@
 		var response = xhr2.response ;
 		const elem = document.getElementById('card-container');	
 		response.forEach(result => {
-			console.log(result)
 			elem.append(createTimeAlertCard(result))
 		});
  	}
  	xhr2.send();
 
-
-
- 	function createValueAlertCard(data){
- 		var newCard = document.createElement("div");
-		newCard.className = 'card';
-		if(data['when_alert']=='ABV'){
-			var word = 'above'
-		}else{
-			var word = 'below'
-		}
-
-		if(data['is_activated']){
-			var is_checked = 'checked'
-		}else{
-			var is_checked = ''
-		}
-
-		newCard.innerHTML = `
-		<div class="card-title">
-		<h2> ${data['title']}</h2>  <h5><button class='btn bg-white' id=v${data['id']} onClick="deleteAlert(this.id,'value')"><i class="material-icons">delete</i></button></h5>
-		</div>
-		<p>${data['base_asset']} is ${word} ${Number(data['coin_value']).toLocaleString()} ${data['quote_asset']}<p>
-		<div>
-		  <input type="checkbox" class="regular-checkbox" id="scales" name="scales" ${is_checked}>
-		  <label>Enabled</label>
-		</div>`
- 		return(newCard)
- 	}
-
- 	function createTimeAlertCard(data){
- 		var newCard = document.createElement("div");
-		newCard.className = 'card';
-		if(data['when_alert']=='ABV'){
-			var word = 'above'
-		}else{
-			var word = 'below'
-		}
-
-		if(data['is_activated']){
-			var is_checked = 'checked'
-		}else{
-			var is_checked = ''
-		}
-
-		newCard.innerHTML = `
-		<div class="card-title">
-		<h2> ${data['title']}</h2>  <h5><button class='btn bg-white' id=${data['id']} onClick="deleteAlert(this.id,'time')"><i class="material-icons">delete</i></button></h5>
-		</div>
-		<p>${data['base_asset']} is ${word} ${Number(data['percentage']).toLocaleString()} % ${data['quote_asset']} during the last ${data['time_delta']}<p>
-		<div>
-		  <input type="checkbox" class="regular-checkbox" id="scales" name="scales" ${is_checked}>
-		  <label>Enabled</label>
-		</div>`
- 		return(newCard)
+ 	if( auth_token != null){
+ 		CreateValueAlertCardForm()
+ 		CreateTimeAlertCardForm()
  	}
 
  	function deleteAlert(AlertId,AlertType){
@@ -106,10 +53,8 @@
 		xhr.setRequestHeader('Authorization','Token '+auth_token)
 		xhr.onload = function(){ 
 			var response = xhr.response ;
-			console.log(response)
 	 	}
 	 	xhr.send();
  	}
-
 </script>
 {% endblock %}

@@ -20,15 +20,16 @@ p {
 	color: 	#736f6f;
 }
 
-input {
+input,select {
 	margin: 1rem;
 }
 
-#card-container, #login-card-container{
+#card-container, #login-card-container,#form-card-container{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-wrap: wrap;  
+	flex-wrap: wrap;
+	margin-top: 1rem;  
 }
 
 .card {
@@ -45,6 +46,7 @@ input {
 .card-title{
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 0.5rem;
 }
 
 .btn{
