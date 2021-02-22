@@ -42,6 +42,7 @@ INSTALLED_APPS = [
      #My apps
     'users',
     'alerts',
+    'front',
     #DRF
     'rest_framework',
     'rest_framework.authtoken',
