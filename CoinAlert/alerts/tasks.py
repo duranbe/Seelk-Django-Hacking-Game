@@ -50,7 +50,7 @@ def time_alert():
 
                 augment = 1 + (alert_percent / 100)
 
-                if (before_value * augment) == (now_value):
+                if (before_value * augment) >= (now_value):
 
                     alert.is_activated = False
 
@@ -68,7 +68,7 @@ def time_alert():
 
                 decrease = 1 - (alert_percent / 100)
 
-                if (before_value * decrease) == (now_value):
+                if (before_value * decrease) <= (now_value):
 
                     alert.is_activated = False
 
