@@ -5,11 +5,11 @@ from . import views
 from rest_framework import routers
 from rest_framework.response import Response
 
-app_name = 'users'
+app_name = "users"
 
-from .views import AuthViewSet,UserViewSet
+from .views import AuthViewSet, UserViewSet
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register('api/auth', AuthViewSet, basename='auth')# Auth urls (login/logout)
-router.register('api/user',UserViewSet,basename='user')# User CRUD urls
+router.register("api/auth", AuthViewSet, basename="auth")  # Auth urls (login/logout)
+router.register("api/user", UserViewSet, basename="user")  # User CRUD urls
 urlpatterns = router.urls
