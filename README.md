@@ -48,3 +48,17 @@ Django, Django Rest Framework, Celery, Redis, SQLITE3 and HTML/CSS/JS
 ### Config
 
 In settings.py modify SECRET KEY, COINAPI_KEY and all EMAIL variables.
+
+### Run Demo
+
+Put a secret key
+
+Then
+
+`py manage.py makemigrations`
+
+`py manage.py migrate`
+
+`py manage.py runserver`
+
+will do the trick
